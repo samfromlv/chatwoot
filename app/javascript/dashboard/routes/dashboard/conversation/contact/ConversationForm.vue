@@ -588,7 +588,7 @@ export default {
       let assigneeId = this.currentUser.id;
       if (this.selectedContacts.length > 1) {
         let bulkContacts = [];
-        this.selectedContacts.forEach(function (item) {
+        this.selectedContacts.forEach(item => {
           let templateParamsToSend = this.expandVariabledInWhatsAppParams(
             templateParams,
             item
