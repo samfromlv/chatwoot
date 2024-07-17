@@ -203,6 +203,11 @@
         "PLACEHOLDER": "Choose source inbox",
         "ERROR": "Select an inbox"
       },
+      "STATUS": {
+        "LABEL": "Create as",
+        "PLACEHOLDER": "Choose status for new conversation",
+        "ERROR": "Status can't be empty"
+      },
       "SUBJECT": {
         "LABEL": "Subject",
         "PLACEHOLDER": "Subject",

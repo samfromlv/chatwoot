@@ -75,6 +75,27 @@
           </label>
         </div>
       </div>
+      <div class="flex-row">
+        <div class="w-[100%]">
+          <label>
+            {{ $t('NEW_CONVERSATION.FORM.STATUS.LABEL') }}
+          </label>
+          <select v-model="newConversationStatus">
+            <option
+              v-for="status in conversationStatuses"
+              :key="status.id"
+              :value="status.id"
+            >
+              {{ status.name }}
+            </option>
+          </select>
+          <label :class="{ error: $v.newConversationStatus.$error }">
+            <span v-if="$v.newConversationStatus.$error" class="message">
+              {{ $t('NEW_CONVERSATION.FORM.STATUS.ERROR') }}
+            </span>
+          </label>
+        </div>
+      </div>
       <div v-if="isAnEmailInbox" class="w-full">
         <div class="w-full">
           <label :class="{ error: $v.subject.$error }">
@@ -298,6 +319,21 @@ export default {
       message: '',
       showCannedResponseMenu: false,
       cannedResponseSearchKey: '',
+      newConversationStatus: 'open',
+      conversationStatuses: [
+        {
+          id: 'open',
+          name: this.$t('CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.open.TEXT'),
+        },
+        {
+          id: 'resolved',
+          name: this.$t('CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.resolved.TEXT'),
+        },
+        {
+          id: 'pending',
+          name: this.$t('CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.pending.TEXT'),
+        },
+      ],
       bccEmails: '',
       ccEmails: '',
       targetInbox: {},
@@ -318,6 +354,9 @@ export default {
       required,
     },
     targetInbox: {
+      required,
+    },
+    newConversationStatus: {
       required,
     },
   },
@@ -351,6 +390,7 @@ export default {
         message: { content: this.message },
         mailSubject: this.subject,
         assigneeId: this.currentUser.id,
+        status: this.newConversationStatus,
       };
 
       if (this.attachedFiles && this.attachedFiles.length) {
@@ -585,6 +625,7 @@ export default {
     prepareWhatsAppMessagePayload({ message: content, templateParams }) {
       let payload = {};
       let inboxId = this.targetInbox.id;
+      let status = this.newConversationStatus;
       let assigneeId = this.currentUser.id;
       if (this.selectedContacts.length > 1) {
         let bulkContacts = [];
@@ -606,6 +647,7 @@ export default {
         payload = {
           bulkContacts: bulkContacts,
           inboxId: inboxId,
+          status: status,
           message: { content, template_params: templateParams },
         };
       } else {
@@ -618,6 +660,7 @@ export default {
           inboxId: inboxId,
           sourceId: this.targetInbox.sourceId,
           contactId: this.selectedContact.id,
+          status: status,
           message: { content, template_params: templateParamsToSend },
           assigneeId: assigneeId,
         };
