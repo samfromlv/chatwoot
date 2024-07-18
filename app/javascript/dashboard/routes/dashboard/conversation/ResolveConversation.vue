@@ -4,7 +4,7 @@
     :show.sync="show"
     :on-close="onCancel"
     size="medium"
-    overflow-visible="true"
+    :overflow-visible="true"
   >
     <div class="flex flex-col modal-content">
       <woot-modal-header

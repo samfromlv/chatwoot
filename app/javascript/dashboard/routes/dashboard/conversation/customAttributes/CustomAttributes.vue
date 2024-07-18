@@ -123,7 +123,6 @@ export default {
           );
         });
       }
-
       attr = attr.sort((a, b) => {
         if (
           a.description_settings.sort_order ===
@@ -133,7 +132,9 @@ export default {
             b.attribute_display_name
           );
         }
-        return a.sort_order - b.sort_order;
+        return (
+          a.description_settings.sort_order - b.description_settings.sort_order
+        );
       });
 
       return attr.map(attribute => {
