@@ -26,7 +26,10 @@ f
       {{ emptyStateMessage }}
     </p>
     <!-- Show more and show less buttons show it if the filteredAttributes length is greater than 5 -->
-    <div v-if="filteredAttributes.length > 5" class="flex px-2 py-2">
+    <div
+      v-if="!loadExpanded && filteredAttributes.length > 5"
+      class="flex px-2 py-2"
+    >
       <woot-button
         size="small"
         :icon="showAllAttributes ? 'chevron-up' : 'chevron-down'"

@@ -116,7 +116,8 @@ export default {
           x =>
             x.description_settings &&
             x.description_settings.tags &&
-            x.description_settings.tags.includes('required_to_resolve')
+            x.description_settings.tags.includes('required_to_resolve') &&
+            x.attribute_display_type !== 'checkbox'
         )
         .map(attribute => {
           // Check if the attribute key exists in customAttributes
