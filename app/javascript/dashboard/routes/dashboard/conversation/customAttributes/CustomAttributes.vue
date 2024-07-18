@@ -1,3 +1,4 @@
+f
 <template>
   <div class="custom-attributes--panel">
     <custom-attribute
@@ -7,7 +8,7 @@
       :attribute-type="attribute.attribute_display_type"
       :values="attribute.attribute_values"
       :label="attribute.attribute_display_name"
-      :description="attribute.attribute_description"
+      :description="getAttributeDescription(attribute.attribute_description)"
       :value="attribute.value"
       :show-actions="true"
       :attribute-regex="attribute.regex_pattern"
@@ -57,6 +58,10 @@ export default {
       type: String,
       default: 'conversation_attribute',
     },
+    tagFilter: {
+      type: String,
+      default: '',
+    },
     attributeClass: {
       type: String,
       default: '',
@@ -66,6 +71,10 @@ export default {
       type: String,
       required: true,
     },
+    loadExpanded: {
+      type: Boolean,
+      default: false,
+    },
     emptyStateMessage: {
       type: String,
       default: '',
@@ -73,7 +82,7 @@ export default {
   },
   data() {
     return {
-      showAllAttributes: false,
+      showAllAttributes: this.loadExpanded,
     };
   },
   computed: {
@@ -83,7 +92,51 @@ export default {
         : this.$t('CUSTOM_ATTRIBUTES.SHOW_LESS');
     },
     filteredAttributes() {
-      return this.attributes.map(attribute => {
+      let attr = this.attributes.map(attribute => {
+        if (attribute.description_settings) return attribute;
+
+        if (
+          attribute.attribute_description &&
+          attribute.attribute_description[0] === '{'
+        ) {
+          try {
+            attribute.description_settings = JSON.parse(
+              attribute.attribute_description
+            );
+          } catch (e) {
+            attribute.description_settings = {};
+          }
+        } else {
+          attribute.description_settings = {};
+        }
+        if (attribute.description_settings.sort_order === undefined) {
+          attribute.description_settings.sort_order = 1000;
+        }
+        return attribute;
+      });
+
+      if (this.tagFilter) {
+        attr = attr.filter(attribute => {
+          return (
+            attribute.description_settings.tags &&
+            attribute.description_settings.tags.includes(this.tagFilter)
+          );
+        });
+      }
+
+      attr = attr.sort((a, b) => {
+        if (
+          a.description_settings.sort_order ===
+          b.description_settings.sort_order
+        ) {
+          return a.attribute_display_name.localeCompare(
+            b.attribute_display_name
+          );
+        }
+        return a.sort_order - b.sort_order;
+      });
+
+      return attr.map(attribute => {
         // Check if the attribute key exists in customAttributes
         const hasValue = Object.hasOwnProperty.call(
           this.customAttributes,

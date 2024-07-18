@@ -491,6 +491,8 @@ export default {
     selectedContacts(value) {
       if (!value || !value.length) {
         this.selectedContactId = 0;
+        this.targetInbox = null;
+        return;
       }
       this.selectedContactId = value[0].id;
     },

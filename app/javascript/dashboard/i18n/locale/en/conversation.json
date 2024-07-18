@@ -144,6 +144,17 @@
       "MESSAGE_SIGNATURE_NOT_CONFIGURED": "Message signature is not configured, please configure it in profile settings.",
       "CLICK_HERE": "Click here to update"
     },
+    "RESOLVE_CONVERSATION": {
+      "BUTTON_LABEL": "Resolve",
+      "TITLE": "Resolve conversation",
+      "DESC": "Resolves conversation and saves resolution summary.",
+      "FORM": {
+        "SUBMIT": "Resolve",
+        "CANCEL": "Cancel",
+        "SUCCESS_MESSAGE": "Conversation resolved!",
+        "VALIDATION_MESSAGE": "Some attributes are empty. Please fill all the fields."
+      }
+    },
     "REPLYBOX": {
       "REPLY": "Reply",
       "PRIVATE_NOTE": "Private Note",

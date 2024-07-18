@@ -31,6 +31,12 @@ export default {
     },
   },
   methods: {
+    getAttributeDescription(attribute) {
+      return (
+        attribute.description_settings?.description ||
+        attribute.attribute_description
+      );
+    },
     isAttributeNumber(attributeValue) {
       return (
         Number.isInteger(Number(attributeValue)) && Number(attributeValue) > 0

@@ -12,6 +12,18 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  attributeFrom: {
+    type: String,
+    required: true,
+  },
+  tagFilter: {
+    type: String,
+    default: '',
+  },
+  loadExpanded: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const referer = computed(() => props.conversationAttributes.referer);
@@ -94,7 +106,9 @@ const staticElements = computed(() =>
     <CustomAttributes
       :class="staticElements.length % 2 === 0 ? 'even' : 'odd'"
       attribute-class="conversation--attribute"
-      attribute-from="conversation_panel"
+      :attribute-from="attributeFrom"
+      :tag-filter="tagFilter"
+      :load-expanded="loadExpanded"
       attribute-type="conversation_attribute"
     />
   </div>

@@ -68,6 +68,7 @@
               "
             >
               <conversation-info
+                attribute-from="conversation_panel"
                 :conversation-attributes="conversationAdditionalAttributes"
                 :contact-attributes="contactAdditionalAttributes"
               />

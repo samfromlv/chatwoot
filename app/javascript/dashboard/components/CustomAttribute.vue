@@ -85,6 +85,7 @@
         <p
           v-else
           class="group-hover:bg-slate-50 group-hover:dark:bg-slate-700 inline-block rounded-sm mb-0 break-all py-0.5 px-1"
+          @dblclick="onDblClick"
         >
           {{ displayValue || '---' }}
         </p>
@@ -295,6 +296,11 @@ export default {
       this.$nextTick(() => {
         this.focusInput();
       });
+    },
+    onDblClick() {
+      if (this.showActions) {
+        this.onEdit();
+      }
     },
     onUpdateListValue(value) {
       if (value) {

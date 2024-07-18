@@ -8,7 +8,9 @@
     >
       <div
         :class="{
-          'modal-container rtl:text-right shadow-md max-h-full overflow-auto relative bg-white dark:bg-slate-800 skip-context-menu': true,
+          'modal-container rtl:text-right shadow-md max-h-full relative bg-white dark:bg-slate-800 skip-context-menu': true,
+          'overflow-visible': overflowVisible,
+          'overflow-auto': !overflowVisible,
           'rounded-xl w-[37.5rem]': !fullWidth,
           'items-center rounded-none flex h-full justify-center w-full':
             fullWidth,
@@ -39,6 +41,10 @@ export default {
       default: true,
     },
     show: Boolean,
+    overflowVisible: {
+      type: Boolean,
+      default: false,
+    },
     showCloseButton: {
       type: Boolean,
       default: true,

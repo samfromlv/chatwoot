@@ -73,6 +73,12 @@
         </woot-dropdown-item>
       </woot-dropdown-menu>
     </div>
+    <resolve-conversation
+      :show="showResolutionModal"
+      :is-loading="isLoading"
+      @resolve="resolveConversation"
+      @cancel="toggleResolutionModal"
+    />
   </div>
 </template>
 
@@ -82,6 +88,7 @@ import alertMixin from 'shared/mixins/alertMixin';
 import keyboardEventListenerMixins from 'shared/mixins/keyboardEventListenerMixins';
 import WootDropdownItem from 'shared/components/ui/dropdown/DropdownItem.vue';
 import WootDropdownMenu from 'shared/components/ui/dropdown/DropdownMenu.vue';
+import ResolveConversation from 'dashboard/routes/dashboard/conversation/ResolveConversation.vue';
 
 import wootConstants from 'dashboard/constants/globals';
 import {
@@ -93,6 +100,7 @@ export default {
   components: {
     WootDropdownItem,
     WootDropdownMenu,
+    ResolveConversation,
   },
   mixins: [alertMixin, keyboardEventListenerMixins],
   props: { conversationId: { type: [String, Number], required: true } },
@@ -100,6 +108,7 @@ export default {
     return {
       isLoading: false,
       showActionsDropdown: false,
+      showResolutionModal: false,
       STATUS_TYPE: wootConstants.STATUS_TYPE,
     };
   },
@@ -136,6 +145,9 @@ export default {
     this.$emitter.off(CMD_RESOLVE_CONVERSATION, this.onCmdResolveConversation);
   },
   methods: {
+    toggleResolutionModal() {
+      this.showResolutionModal = !this.showResolutionModal;
+    },
     getKeyboardEvents() {
       return {
         'Alt+KeyM': {
@@ -188,7 +200,7 @@ export default {
       this.toggleStatus(this.STATUS_TYPE.OPEN);
     },
     onCmdResolveConversation() {
-      this.toggleStatus(this.STATUS_TYPE.RESOLVED);
+      this.toggleResolutionModal();
     },
     showOpenButton() {
       return this.isResolved || this.isSnoozed;
@@ -198,6 +210,10 @@ export default {
     },
     openDropdown() {
       this.showActionsDropdown = true;
+    },
+    resolveConversation() {
+      this.toggleStatus(this.STATUS_TYPE.RESOLVED);
+      this.toggleResolutionModal();
     },
     toggleStatus(status, snoozedUntil) {
       this.closeDropdown();
