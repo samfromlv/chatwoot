@@ -176,7 +176,9 @@ export default {
   methods: {
     initializeSettings() {
       this.showAllAttributes =
-        this.uiSettings[this.showMoreUISettingsKey] || false;
+        this.loadExpanded ||
+        this.uiSettings[this.showMoreUISettingsKey] ||
+        false;
     },
     onClickToggle() {
       this.showAllAttributes = !this.showAllAttributes;
