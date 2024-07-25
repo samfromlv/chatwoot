@@ -7,7 +7,7 @@ class CustomViewsAPI extends ApiClient {
   }
 
   getCustomViewsByFilterType(type) {
-    return axios.get(`${this.url}?filter_type=${type}`);
+    return axios.get(`${this.url}?filter_type=${type}&show_shared=true`);
   }
 
   deleteCustomViews(id, type) {

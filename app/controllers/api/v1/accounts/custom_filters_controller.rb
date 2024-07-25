@@ -31,6 +31,10 @@ class Api::V1::Accounts::CustomFiltersController < Api::V1::Accounts::BaseContro
                         Current.account.custom_filters.where(
                           filter_type: permitted_params[:filter_type] || DEFAULT_FILTER_TYPE
                         )
+                      elsif permitted_params[:show_shared] == 'true'
+                        Current.account.custom_filters.where(
+                          filter_type: permitted_params[:filter_type] || DEFAULT_FILTER_TYPE
+                        ).where('user_id = ? OR name LIKE ?', current_user.id, '__ %')
                       else
                         current_user.custom_filters.where(
                           account_id: Current.account.id,
@@ -52,6 +56,6 @@ class Api::V1::Accounts::CustomFiltersController < Api::V1::Accounts::BaseContro
   end
 
   def permitted_params
-    params.permit(:id, :filter_type, :show_all)
+    params.permit(:id, :filter_type, :show_all, :show_shared)
   end
 end

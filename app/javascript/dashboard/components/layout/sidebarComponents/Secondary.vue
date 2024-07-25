@@ -119,9 +119,7 @@ export default {
             phoneNumber: inbox.phone_number,
             reauthorizationRequired: inbox.reauthorization_required,
           }))
-          .sort((a, b) =>
-            a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1
-          ),
+          .sort((a, b) => a.label.localeCompare(b.label)),
       };
     },
     labelSection() {
@@ -137,15 +135,17 @@ export default {
         showModalForNewItem: true,
         modalName: 'AddLabel',
         dataTestid: 'sidebar-new-label-button',
-        children: this.labels.map(label => ({
-          id: label.id,
-          label: label.title,
-          color: label.color,
-          truncateLabel: true,
-          toState: frontendURL(
-            `accounts/${this.accountId}/label/${label.title}`
-          ),
-        })),
+        children: this.labels
+          .map(label => ({
+            id: label.id,
+            label: label.title,
+            color: label.color,
+            truncateLabel: true,
+            toState: frontendURL(
+              `accounts/${this.accountId}/label/${label.title}`
+            ),
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)),
       };
     },
     contactLabelSection() {
@@ -160,15 +160,17 @@ export default {
         toStateName: 'labels_list',
         showModalForNewItem: true,
         modalName: 'AddLabel',
-        children: this.labels.map(label => ({
-          id: label.id,
-          label: label.title,
-          color: label.color,
-          truncateLabel: true,
-          toState: frontendURL(
-            `accounts/${this.accountId}/labels/${label.title}/contacts`
-          ),
-        })),
+        children: this.labels
+          .map(label => ({
+            id: label.id,
+            label: label.title,
+            color: label.color,
+            truncateLabel: true,
+            toState: frontendURL(
+              `accounts/${this.accountId}/labels/${label.title}/contacts`
+            ),
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)),
       };
     },
     teamSection() {
@@ -182,12 +184,14 @@ export default {
         toState: frontendURL(`accounts/${this.accountId}/settings/teams/new`),
         toStateName: 'settings_teams_new',
         newLinkRouteName: 'settings_teams_new',
-        children: this.teams.map(team => ({
-          id: team.id,
-          label: team.name,
-          truncateLabel: true,
-          toState: frontendURL(`accounts/${this.accountId}/team/${team.id}`),
-        })),
+        children: this.teams
+          .map(team => ({
+            id: team.id,
+            label: team.name,
+            truncateLabel: true,
+            toState: frontendURL(`accounts/${this.accountId}/team/${team.id}`),
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)),
       };
     },
     foldersSection() {
@@ -205,7 +209,8 @@ export default {
             toState: frontendURL(
               `accounts/${this.accountId}/custom_view/${view.id}`
             ),
-          })),
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)),
       };
     },
     contactSegmentsSection() {
@@ -223,7 +228,8 @@ export default {
             toState: frontendURL(
               `accounts/${this.accountId}/contacts/custom_view/${view.id}`
             ),
-          })),
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)),
       };
     },
     additionalSecondaryMenuItems() {
