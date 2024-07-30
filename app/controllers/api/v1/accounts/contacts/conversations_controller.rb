@@ -1,17 +1,24 @@
 class Api::V1::Accounts::Contacts::ConversationsController < Api::V1::Accounts::Contacts::BaseController
   def index
-    @conversations = if permitted_params[:status].nil?
-                       Current.account.conversations.includes(
-                         :assignee, :contact, :inbox, :taggings
-                       ).where(inbox_id: inbox_ids, contact_id: @contact.id).order(id: :desc).limit(20)
-                     else
-                       Current.account.conversations.includes(
-                         :assignee, :contact, :inbox, :taggings
-                       ).where(inbox_id: inbox_ids, contact_id: @contact.id, status: permitted_params[:status]).order(id: :desc).limit(20)
-                     end
+    limit = determine_limit
+
+    @conversations = Current.account.conversations.includes(
+      :assignee, :contact, :inbox, :taggings
+    ).where(inbox_id: inbox_ids, contact_id: @contact.id)
+
+    @conversations = @conversations.where(status: permitted_params[:status]) if permitted_params[:status].present?
+
+    @conversations = @conversations.order(id: :desc).limit(limit)
   end
 
   private
+
+  def determine_limit
+    limit = 20
+    return limit if permitted_params[:limit].nil?
+
+    [permitted_params[:limit].to_i, limit].min
+  end
 
   def inbox_ids
     if Current.user.administrator? || Current.user.agent?
@@ -22,6 +29,6 @@ class Api::V1::Accounts::Contacts::ConversationsController < Api::V1::Accounts::
   end
 
   def permitted_params
-    params.permit(:status)
+    params.permit(:status, :limit)
   end
 end
