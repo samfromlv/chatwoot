@@ -8,7 +8,7 @@ f
       :attribute-type="attribute.attribute_display_type"
       :values="attribute.attribute_values"
       :label="attribute.attribute_display_name"
-      :description="getAttributeDescription(attribute.attribute_description)"
+      :description="getAttributeDescription(attribute)"
       :value="attribute.value"
       :show-actions="true"
       :attribute-regex="attribute.regex_pattern"

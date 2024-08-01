@@ -130,6 +130,11 @@ class Api::V1::Accounts::ConversationsController < Api::V1::Accounts::BaseContro
     @conversation.save!
   end
 
+  def custom_attributes_merge
+    @conversation.custom_attributes.merge!(params.permit(custom_attributes: {})[:custom_attributes])
+    @conversation.save!
+  end
+
   private
 
   def permitted_update_params
