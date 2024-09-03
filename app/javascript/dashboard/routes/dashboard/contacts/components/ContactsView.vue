@@ -28,7 +28,7 @@
       <table-footer
         :current-page="Number(meta.currentPage)"
         :total-count="meta.count"
-        :page-size="25"
+        :page-size="50"
         @page-change="onPageChange"
       />
     </div>
