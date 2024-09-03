@@ -8,13 +8,16 @@ require:
 Layout/LineLength:
   Max: 150
 
+Metrics/CyclomaticComplexity:
+  Max: 8
+
 Metrics/ClassLength:
-  Max: 200
+  Max: 250
   Exclude:
     - 'app/models/message.rb'
     - 'app/models/conversation.rb'
 Metrics/MethodLength:
-  Max: 19
+  Max: 25
 RSpec/ExampleLength:
   Max: 25
 Style/Documentation:

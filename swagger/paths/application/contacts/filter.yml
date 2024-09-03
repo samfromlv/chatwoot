@@ -27,7 +27,7 @@ parameters:
               filter_operator:
                 type: string
                 description: filter operator name
-                enum: [ equal_to, not_equal_to, contains, does_not_contain ]
+                enum: [ equal_to, not_equal_to, any_of, not_any_of, contains, does_not_contain ]
               values:
                 type: array
                 items:

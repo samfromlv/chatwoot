@@ -22,6 +22,8 @@
     "OPERATOR_LABELS": {
       "equal_to": "Equal to",
       "not_equal_to": "Not equal to",
+      "any_of": "Any of",
+      "not_any_of": "Not any of",
       "contains": "Contains",
       "does_not_contain": "Does not contain",
       "is_present": "Is present",

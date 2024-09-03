@@ -38,6 +38,14 @@ export const OPERATOR_TYPES_3 = [
     label: 'Not equal to',
   },
   {
+    value: 'any_of',
+    label: 'Any of',
+  },
+  {
+    value: 'not_any_of',
+    label: 'Not any of',
+  },
+  {
     value: 'contains',
     label: 'Contains',
   },

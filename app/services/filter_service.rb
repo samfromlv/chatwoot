@@ -25,6 +25,9 @@ class FilterService
     when 'equal_to', 'not_equal_to'
       @filter_values["value_#{current_index}"] = filter_values(query_hash)
       equals_to_filter_string(query_hash[:filter_operator], current_index)
+    when 'any_of', 'not_any_of'
+      @filter_values["value_#{current_index}"] = values_for_any_of(query_hash)
+      any_of_filter_string(query_hash[:filter_operator], current_index)
     when 'contains', 'does_not_contain'
       @filter_values["value_#{current_index}"] = values_for_ilike(query_hash)
       ilike_filter_string(query_hash[:filter_operator], current_index)
@@ -75,6 +78,19 @@ class FilterService
         .map { |item| "%#{item.strip}%" }
     else
       ["%#{query_hash['values'].strip}%"]
+    end
+  end
+
+  def values_for_any_of(query_hash)
+    values = query_hash['values']
+    return [] if values.blank?
+
+    if values.is_a?(String)
+      values.split(',').map(&:strip)
+    elsif values.is_a?(Array)
+      values.flat_map { |value| value.split(',').map(&:strip) }
+    else
+      []
     end
   end
 
@@ -184,6 +200,12 @@ class FilterService
     return  "IN (:value_#{current_index})" if filter_operator == 'equal_to'
 
     "NOT IN (:value_#{current_index})"
+  end
+
+  def any_of_filter_string(filter_operator, current_index)
+    return "ILIKE ANY (ARRAY[:value_#{current_index}])" if filter_operator == 'any_of'
+
+    "NOT ILIKE ALL (ARRAY[:value_#{current_index}])"
   end
 
   def ilike_filter_string(filter_operator, current_index)

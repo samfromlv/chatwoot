@@ -20,12 +20,16 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   assignee_id:
     attribute_type: "standard"
     data_type: "text"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "is_present"
       - "is_not_present"
   inbox_id:
@@ -34,6 +38,8 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "is_present"
       - "is_not_present"
   team_id:
@@ -42,6 +48,8 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "is_present"
       - "is_not_present"
   priority:
@@ -50,12 +58,16 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   display_id:
     attribute_type: "standard"
     data_type: "Number"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
   campaign_id:
@@ -64,6 +76,8 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "is_present"
       - "is_not_present"
   labels:
@@ -72,6 +86,8 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "is_present"
       - "is_not_present"
   browser_language:
@@ -80,24 +96,32 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   conversation_language:
     attribute_type: "additional_attributes"
     data_type: "text"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   country_code:
     attribute_type: "additional_attributes"
     data_type: "text"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   referer:
     attribute_type: "additional_attributes"
     data_type: "link"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
   created_at:
@@ -120,6 +144,8 @@ conversations:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
 
@@ -134,6 +160,8 @@ contacts:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
   phone_number:
@@ -142,6 +170,8 @@ contacts:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
       - "starts_with"
@@ -151,6 +181,8 @@ contacts:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
   identifier:
@@ -159,18 +191,24 @@ contacts:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   country_code:
     attribute_type: "additional_attributes"
     data_type: "text_case_insensitive"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   city:
     attribute_type: "additional_attributes"
     data_type: "text_case_insensitive"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
   company:
@@ -179,6 +217,8 @@ contacts:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
   labels:
@@ -187,6 +227,8 @@ contacts:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "is_present"
       - "is_not_present"
   created_at:
@@ -209,6 +251,8 @@ contacts:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
 
 ### ----- End of Contact Filters ----- ###
 
@@ -220,12 +264,16 @@ messages:
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
   content:
     attribute_type: "standard"
     data_type: "text"
     filter_operators:
       - "equal_to"
       - "not_equal_to"
+      - "any_of"
+      - "not_any_of"
       - "contains"
       - "does_not_contain"
 
