@@ -17,7 +17,7 @@
 #  index_custom_filters_on_user_id     (user_id)
 #
 class CustomFilter < ApplicationRecord
-  MAX_FILTER_PER_USER = 50
+  MAX_FILTER_PER_USER = 500
   belongs_to :user
   belongs_to :account
 

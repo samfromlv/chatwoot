@@ -93,7 +93,7 @@ RSpec.describe 'Custom Filters API', type: :request do
         expect(json_response['name']).to eq 'vip-customers'
       end
 
-      it 'gives the error for 51st record' do
+      it 'gives the error for 501st record' do
         CustomFilter.delete_all
         CustomFilter::MAX_FILTER_PER_USER.times do
           create(:custom_filter, user: user, account: account)
