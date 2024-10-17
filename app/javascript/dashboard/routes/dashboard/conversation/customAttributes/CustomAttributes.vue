@@ -1,4 +1,3 @@
-f
 <template>
   <div class="custom-attributes--panel">
     <custom-attribute
