@@ -197,7 +197,7 @@ import {
 import { LOCAL_STORAGE_KEYS } from 'dashboard/constants/localStorage';
 import { LocalStorage } from 'shared/helpers/localStorage';
 
-const EmojiInput = () => import('shared/components/emoji/EmojiInput');
+const EmojiInput = () => import('shared/components/emoji/EmojiInput.vue');
 
 export default {
   components: {
@@ -885,29 +885,32 @@ export default {
     },
     expandVariabledInWhatsAppParams(templateParams) {
       let templateParamsToSend = templateParams;
-      if (templateParamsToSend.processed_params && Object.keys(templateParamsToSend.processed_params).length) {
+      if (
+        templateParamsToSend.processed_params &&
+        Object.keys(templateParamsToSend.processed_params).length
+      ) {
         templateParamsToSend = {};
-        for (const key in templateParams) {
+        Object.keys(templateParams).forEach(key => {
           templateParamsToSend[key] = templateParams[key];
-        }
+        });
 
         const updatedProcessedParams = {};
-        for (const key in templateParamsToSend.processed_params) {
+        Object.keys(templateParamsToSend.processed_params).forEach(key => {
           updatedProcessedParams[key] = replaceVariablesInMessage({
             message: templateParamsToSend.processed_params[key],
             variables: this.messageVariables,
           });
-        }
+        });
 
         templateParamsToSend.processed_params = updatedProcessedParams;
       }
       return templateParamsToSend;
     },
     async onSendWhatsAppReply(messagePayload) {
-
       var templateParams = messagePayload.templateParams;
       if (templateParams) {
-        messagePayload.templateParams = this.expandVariabledInWhatsAppParams(templateParams);
+        messagePayload.templateParams =
+          this.expandVariabledInWhatsAppParams(templateParams);
       }
 
       this.sendMessage({
