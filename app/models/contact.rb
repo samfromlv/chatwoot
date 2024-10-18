@@ -127,20 +127,6 @@ class Contact < ApplicationRecord
     )
   }
 
-  def save!
-    # 'Channel::TwilioSms', 'Channel::Whatsapp', 'Channel::Sms'
-    filter = ['Channel::Whatsapp']
-    transaction do
-      contact_inboxes
-        .select { |ci| filter.include?(ci.inbox.channel_type) }
-        .map do |ci|
-          ci.source_id = phone_number.delete('+').to_s
-          ci.save!
-        end
-      super
-    end
-  end
-
   def get_source_id(inbox_id)
     contact_inboxes.find_by!(inbox_id: inbox_id).source_id
   end
