@@ -102,13 +102,13 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
     # 'Channel::TwilioSms', 'Channel::Whatsapp', 'Channel::Sms'
     filter = ['Channel::Whatsapp']
     Contact.transaction do
+      @contact.save!
       @contact.contact_inboxes
               .select { |ci| filter.include?(ci.inbox.channel_type) }
               .map do |ci|
         ci.source_id = @contact.phone_number.delete('+').to_s
         ci.save!
       end
-      @contact.save!
     end
     process_avatar_from_url
   end
