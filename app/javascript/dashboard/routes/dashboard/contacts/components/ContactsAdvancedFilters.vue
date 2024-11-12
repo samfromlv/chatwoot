@@ -90,7 +90,7 @@
 
 <script>
 import alertMixin from 'shared/mixins/alertMixin';
-import { required } from 'vuelidate/lib/validators';
+import { required, requiredIf } from 'vuelidate/lib/validators';
 import FilterInputBox from '../../../../components/widgets/FilterInput/Index.vue';
 import countries from 'shared/constants/countries.js';
 import { mapGetters } from 'vuex';
@@ -130,7 +130,12 @@ export default {
       required,
       $each: {
         values: {
-          required,
+          required: requiredIf(prop => {
+            return !(
+              prop.filter_operator === 'is_present' ||
+              prop.filter_operator === 'is_not_present'
+            );
+          }),
           ensureBetween0to999(value, prop) {
             if (prop.filter_operator === 'days_before') {
               return parseInt(value, 10) > 0 && parseInt(value, 10) < 999;
@@ -247,11 +252,11 @@ export default {
         return [
           {
             id: true,
-            name: "true",
+            name: 'true',
           },
           {
             id: false,
-            name: "false",
+            name: 'false',
           },
         ];
       }
