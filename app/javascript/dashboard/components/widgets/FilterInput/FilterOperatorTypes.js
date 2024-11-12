@@ -1,7 +1,7 @@
 export const OPERATOR_TYPES_1 = [
   {
     value: 'equal_to',
-    label: 'Equal to 1',
+    label: 'Equal to',
   },
   {
     value: 'not_equal_to',
@@ -13,7 +13,7 @@ export const OPERATOR_TYPES_1 = [
   },
   {
     value: 'is_not_present',
-    label: 'Is not present 1',
+    label: 'Is not present',
   },
 ];
 
