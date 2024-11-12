@@ -29,7 +29,6 @@
           </span>
         </label>
       </div>
-      <p>oko981</p>
       <div class="flex flex-row justify-end gap-2 py-4 px-8 w-full">
         <woot-button :is-loading="isLoading" @click.prevent="onFormSubmit">
           {{ $t('CONVERSATION.RESOLVE_CONVERSATION.FORM.SUBMIT') }}
