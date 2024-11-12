@@ -61,6 +61,14 @@ export const OPERATOR_TYPES_3 = [
     value: 'does_not_contain',
     label: 'Does not contain',
   },
+  {
+    value: 'is_present',
+    label: 'Is present',
+  },
+  {
+    value: 'is_not_present',
+    label: 'Is not present',
+  },
 ];
 
 export const OPERATOR_TYPES_4 = [
@@ -102,5 +110,13 @@ export const OPERATOR_TYPES_5 = [
   {
     value: 'days_before',
     label: 'Is x days before',
+  },
+  {
+    value: 'is_present',
+    label: 'Is present',
+  },
+  {
+    value: 'is_not_present',
+    label: 'Is not present',
   },
 ];

@@ -2286,6 +2286,8 @@
                           "not_equal_to",
                           "any_of",
                           "not_any_of",
+                          "is_present",
+                          "is_not_present",
                           "contains",
                           "does_not_contain"
                         ]
@@ -3233,6 +3235,8 @@
                           "not_equal_to",
                           "any_of",
                           "not_any_of",
+                          "is_present",
+                          "is_not_present",
                           "contains",
                           "does_not_contain"
                         ]
