@@ -192,6 +192,8 @@ contacts:
       - "equal_to"
       - "not_equal_to"
       - "any_of"
+      - "is_present"
+      - "is_not_present"
       - "not_any_of"
   country_code:
     attribute_type: "additional_attributes"
