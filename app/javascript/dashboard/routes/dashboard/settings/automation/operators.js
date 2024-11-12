@@ -7,6 +7,14 @@ export const OPERATOR_TYPES_1 = [
     value: 'not_equal_to',
     label: 'Not equal to',
   },
+  {
+    value: 'is_present',
+    label: 'Is present',
+  },
+  {
+    value: 'is_not_present',
+    label: 'Is not present',
+  },
 ];
 
 export const OPERATOR_TYPES_2 = [
