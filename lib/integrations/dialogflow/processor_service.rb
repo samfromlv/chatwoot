@@ -71,6 +71,9 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
   def detect_intent(session_id, message)
     interceptor = VersionInterceptor.new
     client = ::Google::Cloud::Dialogflow::V2::Sessions::Client.new do |config|
+      # Ensure the interceptors array is initialized
+      config.interceptors ||= []
+      # Add the custom interceptor
       config.interceptors << interceptor
     end
     session = "projects/#{hook.settings['project_id']}/agent/sessions/#{session_id}"
