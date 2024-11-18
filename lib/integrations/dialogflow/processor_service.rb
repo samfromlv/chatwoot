@@ -89,7 +89,7 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
       Rails.logger.warn("Interceptor: Request payload - #{request.inspect}")
 
       # Replace `/v2` with `/v2beta1` in the method path
-      updated_method = method.gsub('/v2', '/v2beta1')
+      updated_method = method.gsub('.v2.', '.v2beta1.')
       Rails.logger.warn("Interceptor: Updated method - #{updated_method}")
 
       # Proceed with the updated method path
