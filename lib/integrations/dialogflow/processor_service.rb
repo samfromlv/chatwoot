@@ -69,9 +69,21 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
   end
 
   def detect_intent(session_id, message)
-    client = ::Google::Cloud::Dialogflow::V2::Sessions::Client.new
+    interceptor = VersionInterceptor.new
+    client = ::Google::Cloud::Dialogflow::V2::Sessions::Client.new do |config|
+      config.interceptors << interceptor
+    end
     session = "projects/#{hook.settings['project_id']}/agent/sessions/#{session_id}"
     query_input = { text: { text: message, language_code: 'en-US' } }
     client.detect_intent session: session, query_input: query_input
+  end
+
+  class VersionInterceptor < GRPC::ClientInterceptor
+    def request_response(request:, call:, method:, metadata:, **)
+      # Modify the method path from `/v2` to `/v2beta1`
+      updated_method = method.gsub('/v2', '/v2beta1')
+      # Proceed with the updated method path
+      call.execute(updated_method, request, metadata)
+    end
   end
 end
