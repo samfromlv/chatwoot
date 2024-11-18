@@ -83,10 +83,24 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
 
   class VersionInterceptor < GRPC::ClientInterceptor
     def request_response(request:, call:, method:, metadata:, **)
+      # Log the initial method path and metadata
+      Rails.logger.warn("Interceptor: Original method - #{method}")
+      Rails.logger.warn("Interceptor: Original metadata - #{metadata.inspect}")
+      Rails.logger.warn("Interceptor: Request payload - #{request.inspect}")
+
       # Replace `/v2` with `/v2beta1` in the method path
       updated_method = method.gsub('/v2', '/v2beta1')
-      # Call the next interceptor or proceed with the modified method path
-      yield(request, call, updated_method: updated_method, metadata: metadata)
+      Rails.logger.warn("Interceptor: Updated method - #{updated_method}")
+
+      # Proceed with the updated method path
+      yield(request, call, method: updated_method, metadata: metadata).tap do |response|
+        # Log the response after the call completes
+        Rails.logger.warn("Interceptor: Response - #{response.inspect}")
+      end
+    rescue StandardError => e
+      # Log any errors that occur during the interception
+      Rails.logger.warn("Interceptor: Error - #{e.message}")
+      raise
     end
   end
 end
