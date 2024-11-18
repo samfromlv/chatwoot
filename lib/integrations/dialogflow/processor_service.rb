@@ -66,8 +66,6 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
       config.timeout = 10.0
       config.credentials = hook.settings['credentials']
     end
-
-    ::Google::Cloud::Dialogflow::V2::Sessions::Client::API_VERSION.replace('v2beta1')
   end
 
   def detect_intent(session_id, message)
