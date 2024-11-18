@@ -83,10 +83,10 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
 
   class VersionInterceptor < GRPC::ClientInterceptor
     def request_response(request:, call:, method:, metadata:, **)
-      # Modify the method path from `/v2` to `/v2beta1`
+      # Replace `/v2` with `/v2beta1` in the method path
       updated_method = method.gsub('/v2', '/v2beta1')
-      # Proceed with the updated method path
-      call.execute(updated_method, request, metadata)
+      # Call the next interceptor or proceed with the modified method path
+      yield(request, call, updated_method: updated_method, metadata: metadata)
     end
   end
 end
