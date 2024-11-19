@@ -1,4 +1,4 @@
-require 'google/cloud/dialogflow/v2'
+require 'google/apis/dialogflow_v2beta1'
 
 class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorService
   pattr_initialize [:event_name!, :hook!, :event_data!]
@@ -18,17 +18,15 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
     if hook.settings['credentials'].blank?
       Rails.logger.warn "Account: #{hook.try(:account_id)} Hook: #{hook.id} credentials are not present." && return
     end
-
-    configure_dialogflow_client_defaults
     detect_intent(session_id, message)
-  rescue Google::Cloud::PermissionDeniedError => e
+  rescue Google::Apis::AuthorizationError => e
     Rails.logger.warn "DialogFlow Error: (account-#{hook.try(:account_id)}, hook-#{hook.id}) #{e.message}"
     hook.prompt_reauthorization!
     hook.disable
   end
 
   def process_response(message, response)
-    fulfillment_messages = response.query_result['fulfillment_messages']
+    fulfillment_messages = response.query_result.fulfillment_messages
     fulfillment_messages.each do |fulfillment_message|
       content_params = generate_content_params(fulfillment_message)
       if content_params['action'].present?
@@ -40,9 +38,9 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
   end
 
   def generate_content_params(fulfillment_message)
-    text_response = fulfillment_message['text'].to_h
+    text_response = fulfillment_message.text.to_h
     content_params = { content: text_response[:text].first } if text_response[:text].present?
-    content_params ||= fulfillment_message['payload'].to_h
+    content_params ||= fulfillment_message.payload.to_h
     content_params
   end
 
@@ -61,46 +59,31 @@ class Integrations::Dialogflow::ProcessorService < Integrations::BotProcessorSer
     )
   end
 
-  def configure_dialogflow_client_defaults
-    ::Google::Cloud::Dialogflow::V2::Sessions::Client.configure do |config|
-      config.timeout = 10.0
-      config.credentials = hook.settings['credentials']
-    end
-  end
-
   def detect_intent(session_id, message)
-    interceptor = VersionInterceptor.new
-    client = ::Google::Cloud::Dialogflow::V2::Sessions::Client.new do |config|
-      # Ensure the interceptors array is initialized
-      config.interceptors ||= []
-      # Add the custom interceptor
-      config.interceptors << interceptor
-    end
+    # Initialize Dialogflow client
+    Rails.logger.warn 'Test67'
+
+    dialogflow = Google::Apis::DialogflowV2beta1::DialogflowService.new
+
+    dialogflow.authorization = Google::Auth::ServiceAccountCredentials.make_creds(
+      json_key_io: StringIO.new(hook.settings['credentials'].to_json),
+      scope: 'https://www.googleapis.com/auth/cloud-platform'
+    )
+
+    # Build session path
     session = "projects/#{hook.settings['project_id']}/agent/sessions/#{session_id}"
-    query_input = { text: { text: message, language_code: 'en-US' } }
-    client.detect_intent session: session, query_input: query_input
-  end
-
-  class VersionInterceptor < GRPC::ClientInterceptor
-    def request_response(request:, call:, method:, metadata:, **)
-      # Log the initial method path and metadata
-      Rails.logger.warn("Interceptor: Original method - #{method}")
-      Rails.logger.warn("Interceptor: Original metadata - #{metadata.inspect}")
-      Rails.logger.warn("Interceptor: Request payload - #{request.inspect}")
-
-      # Replace `/v2` with `/v2beta1` in the method path
-      updated_method = method.gsub('.v2.', '.v2beta1.')
-      Rails.logger.warn("Interceptor: Updated method - #{updated_method}")
-
-      # Proceed with the updated method path
-      yield(request, call, method: updated_method, metadata: metadata).tap do |response|
-        # Log the response after the call completes
-        Rails.logger.warn("Interceptor: Response - #{response.inspect}")
-      end
-    rescue StandardError => e
-      # Log any errors that occur during the interception
-      Rails.logger.warn("Interceptor: Error - #{e.message}")
-      raise
-    end
+    # Build query input
+    query_input = Google::Apis::DialogflowV2beta1::GoogleCloudDialogflowV2beta1QueryInput.new(
+      text: Google::Apis::DialogflowV2beta1::GoogleCloudDialogflowV2beta1TextInput.new(
+        text: message,
+        language_code: 'en-US'
+      )
+    )
+    # Construct the detectIntent request
+    request = Google::Apis::DialogflowV2beta1::GoogleCloudDialogflowV2beta1DetectIntentRequest.new(
+      query_input: query_input
+    )
+    # Call detectIntent
+    dialogflow.detect_session_intent(session, request)
   end
 end
