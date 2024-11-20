@@ -56,7 +56,7 @@ class Integrations::Csml::ProcessorService < Integrations::BotProcessorService
     }
   end
 
-  def process_response(message, response)
+  def process_response(message, response, _session_id)
     csml_messages = response['messages']
     has_conversation_ended = response['conversation_end']
 
