@@ -292,6 +292,8 @@ export default {
             'contacts/setCustomAttributes',
             message.customAttributes
           );
+        } else if (message.event === 'force-start-conversation') {
+          this.$store.dispatch('conversation/createConversation', {});
         } else if (message.event === 'delete-custom-attribute') {
           this.$store.dispatch(
             'contacts/deleteCustomAttribute',

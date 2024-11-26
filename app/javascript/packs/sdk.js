@@ -141,6 +141,10 @@ const runSDK = ({ baseUrl, websiteToken }) => {
       }
     },
 
+    forceStartConversation() {
+      IFrameHelper.sendMessage('force-start-conversation');
+    },
+
     setConversationCustomAttributes(customAttributes = {}) {
       if (!customAttributes || !Object.keys(customAttributes).length) {
         throw new Error('Custom attributes should have atleast one key');
