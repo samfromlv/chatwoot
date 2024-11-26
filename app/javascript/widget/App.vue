@@ -293,7 +293,11 @@ export default {
             message.customAttributes
           );
         } else if (message.event === 'force-start-conversation') {
-          this.$store.dispatch('conversation/createConversation', {});
+          this.$store
+            .dispatch('conversation/createConversation', {})
+            .then(() => {
+              this.replaceRoute('messages');
+            });
         } else if (message.event === 'delete-custom-attribute') {
           this.$store.dispatch(
             'contacts/deleteCustomAttribute',
