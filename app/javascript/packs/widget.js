@@ -16,6 +16,7 @@ import { directive as onClickaway } from 'vue-clickaway';
 import { emitter } from 'shared/helpers/mitt';
 import { domPurifyConfig } from '../shared/helpers/HTMLSanitizer';
 const PhoneInput = () => import('../widget/components/Form/PhoneInput');
+import 'katex/dist/katex.min.css';
 
 Vue.use(VueI18n);
 Vue.use(Vuelidate);
