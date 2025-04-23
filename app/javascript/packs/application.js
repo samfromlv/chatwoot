@@ -34,6 +34,7 @@ import { domPurifyConfig } from '../shared/helpers/HTMLSanitizer';
 import AnalyticsPlugin from '../dashboard/helper/AnalyticsHelper/plugin';
 import resizeDirective from '../dashboard/helper/directives/resize.js';
 import { directive as onClickaway } from 'vue-clickaway';
+import 'katex/dist/katex.min.css';
 
 Vue.config.env = process.env;
 

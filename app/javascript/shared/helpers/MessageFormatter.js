@@ -1,5 +1,7 @@
 import mila from 'markdown-it-link-attributes';
+import textmath from 'markdown-it-texmath';
 import mentionPlugin from './markdownIt/link';
+import katex from 'katex';
 
 const setImageHeight = inlineToken => {
   const imgSrc = inlineToken.attrGet('src');
@@ -42,6 +44,12 @@ const md = require('markdown-it')({
 })
   .use(mentionPlugin)
   .use(imgResizeManager)
+  .use(textmath, {
+    engine: katex,
+    delimiters: 'brackets',
+    // delimiters: 'dollars',
+    katexOptions: { macros: { '\\RR': '\\mathbb{R}' } },
+  })
   .use(mila, {
     attrs: {
       class: 'link',
