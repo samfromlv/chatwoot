@@ -64,7 +64,8 @@ class Api::V1::Widget::ConversationsController < Api::V1::Widget::BaseController
   end
 
   def set_custom_attributes
-    conversation.update!(custom_attributes: permitted_params[:custom_attributes])
+    conversation.custom_attributes = conversation.custom_attributes.merge(permitted_params[:custom_attributes])
+    conversation.save!
   end
 
   def destroy_custom_attributes
