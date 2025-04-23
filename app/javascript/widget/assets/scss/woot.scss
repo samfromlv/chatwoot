@@ -48,6 +48,8 @@ body {
 }
 
 .message-content {
+  position: relative;
+
   ul {
     list-style: disc;
     padding-left: $space-slab;
