@@ -4,6 +4,7 @@ if [ "$(whoami)" != "chatwoot" ]; then
     exit 1
 fi
 
+git pull
 bundle
 yarn install
 rake assets:precompile RAILS_ENV=production
