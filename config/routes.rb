@@ -155,7 +155,16 @@ Rails.application.routes.draw do
             end
           end
           resources :custom_attribute_definitions, only: [:index, :show, :create, :update, :destroy]
-          resources :custom_filters, only: [:index, :show, :create, :update, :destroy]
+          resources :custom_filters, only: [:index, :show, :create, :update, :destroy] do
+            collection do
+              get 'admin/:user_id', to: 'custom_filters#admin_index', as: :admin_index
+              post 'admin/:user_id', to: 'custom_filters#admin_create', as: :admin_create
+            end
+            member do
+              patch :admin_update
+              delete :admin_destroy
+            end
+          end
           resources :inboxes, only: [:index, :show, :create, :update, :destroy] do
             get :assignable_agents, on: :member
             get :campaigns, on: :member
