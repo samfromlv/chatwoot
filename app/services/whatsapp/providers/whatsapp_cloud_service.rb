@@ -93,7 +93,7 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     attachment = message.attachments.first
     type = determine_attachment_type(attachment)
     type_content = build_attachment_content(attachment, message, type)
-    response = send_attachment_request(phone_number, type, type_content)
+    response = send_attachment_request(phone_number, message, type, type_content)
     process_response(response)
   end
 
@@ -110,7 +110,7 @@ class Whatsapp::Providers::WhatsappCloudService < Whatsapp::Providers::BaseServi
     type_content
   end
 
-  def send_attachment_request(phone_number, type, type_content)
+  def send_attachment_request(phone_number, message, type, type_content)
     HTTParty.post(
       "#{phone_id_path}/messages",
       headers: api_headers,
