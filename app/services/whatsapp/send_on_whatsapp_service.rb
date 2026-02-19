@@ -28,13 +28,23 @@ class Whatsapp::SendOnWhatsappService < Base::SendOnChannelService
     message.update!(source_id: message_id) if message_id.present?
   end
 
-  def processable_channel_message_template
+  def processable_channel_message_template # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     if template_params.present?
+      # Ensure image header uses example if not provided
+      header_component = template_params['components']&.find { |c| c['type'] == 'HEADER' }
+      if header_component && header_component['format'] == 'IMAGE'
+        header_key = template_params['processed_params'].keys.find { |k| k.start_with?('header') }
+        if header_key.nil? || template_params['processed_params'][header_key].blank?
+          example_link = header_component.dig('example', 'header_handle', 0)
+          template_params['processed_params']['header|0'] = example_link if example_link # rubocop:disable Metrics/BlockNesting
+        end
+      end
+
       return [
         template_params['name'],
         template_params['namespace'],
         template_params['language'],
-        get_component_params(template_params['processed_params'])
+        get_component_params(template_params['processed_params'], template_params['components'])
       ]
     end
 
@@ -56,27 +66,37 @@ class Whatsapp::SendOnWhatsappService < Base::SendOnChannelService
     [nil, nil, nil, nil]
   end
 
-  def get_component_params(processed_params)
+  def get_component_params(processed_params, template_components = nil)
     return nil if processed_params.nil?
 
-    categorized_params = categorize_params(processed_params)
+    categorized_params = categorize_params(processed_params, template_components)
     construct_result_array(categorized_params)
   end
 
-  def categorize_params(processed_params)
+  def categorize_params(processed_params, template_components = nil) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     categorized_params = {}
 
     filter = %w[body header]
+
+    # Find header format if available
+    header_format = nil
+    if template_components
+      header_component = template_components.find { |c| c['type'] == 'HEADER' || c[:type] == 'HEADER' }
+      header_format = header_component && (header_component['format'] || header_component[:format])
+    end
 
     processed_params.each do |key, value|
       type, primary_index, sub_type = parse_key(key)
 
       if filter.include?(type)
-        # Aggregate all body entries
         categorized_params[type] ||= []
-        categorized_params[type] << { type: 'text', text: value }
+        categorized_params[type] << if type == 'header' && header_format == 'IMAGE'
+                                      # WhatsApp expects: { type: 'image', image: { link: value } }
+                                      { type: 'image', image: { link: value } }
+                                    else
+                                      { type: 'text', text: value }
+                                    end
       else
-        # Handle button entries, now considering sub_types
         categorized_params[type] ||= {}
         categorized_params[type][primary_index] ||= {}
         categorized_params[type][primary_index][sub_type] ||= []
